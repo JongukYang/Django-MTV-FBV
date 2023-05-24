@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from random import choices
 from sre_constants import CATEGORY
 from django import forms
@@ -11,18 +12,19 @@ from .models import Post
 #     ]
 #     image = forms.ImageField(label='이미지')
 #     content = forms.CharField(label='내용', widget=forms.Textarea, required=True)
-    # category = forms.ChoiceField(label='카테고리', choices=CATEGORY_CHOICES)
+# category = forms.ChoiceField(label='카테고리', choices=CATEGORY_CHOICES)
+
 
 class PostBaseForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = '__all__'
 
-from django.core.exceptions import ValidationError
+
 class PostCreateForm(PostBaseForm):
     class Meta(PostBaseForm.Meta):
         fields = ['image', 'content']
-    
+
     def clean_content(self):
         data = self.cleaned_data['content']
         if "비속어" == data:

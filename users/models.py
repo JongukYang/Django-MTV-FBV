@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, UserManager as DjangoUserManager
 
+
 class UserManager(DjangoUserManager):
     def _create_user(self, username, email, password, **extra_fields):
         if not email:
@@ -20,7 +21,6 @@ class UserManager(DjangoUserManager):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         return self._create_user(username, email, password, **extra_fields)
-
 
 
 class User(AbstractUser):

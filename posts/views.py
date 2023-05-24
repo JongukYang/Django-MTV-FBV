@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import PostBaseForm, PostCreateForm, PostDetailForm
 from .models import Post
 
+
 def index(request):
     post_list = Post.objects.all().order_by('-created_at')  # Post 전체 데이터 조회
     context = {
@@ -14,14 +15,17 @@ def index(request):
     }
     return render(request, 'index.html', context)
 
+
 def post_list_view(request):
     # post_list = Post.objects.all()  # Post 전체 데이터 조회
-    post_list = Post.objects.filter(writer=request.user)  # Post.writer가 현재 로그인인 것 조회
+    post_list = Post.objects.filter(
+        writer=request.user)  # Post.writer가 현재 로그인인 것 조회
     # post_list = None
     context = {
         'post_list': post_list,
     }
     return render(request, 'posts/post_list.html', context)
+
 
 def post_detail_view(request, id):
     try:
@@ -51,6 +55,7 @@ def post_create_view(request):
         )
         return redirect('index')
 
+
 def post_create_form_view(request):
     if request.method == 'GET':
         form = PostCreateForm()
@@ -58,7 +63,7 @@ def post_create_form_view(request):
         return render(request, 'posts/post_form2.html', context)
     else:
         form = PostCreateForm(request.POST, request.FILES)
-        
+
         if form.is_valid():
             Post.objects.create(
                 image=form.cleaned_data['image'],
@@ -77,7 +82,7 @@ def post_update_view(request, id):
     post = get_object_or_404(Post, id=id, writer=request.user)
 
     if request.method == 'GET':
-        context = { 'post': post }
+        context = {'post': post}
         return render(request, 'posts/post_form.html', context)
     elif request.method == 'POST':
         new_image = request.FILES.get('image')
@@ -93,37 +98,28 @@ def post_update_view(request, id):
         post.save()
         return redirect('posts:post-detail', post.id)
 
+
 @login_required
 def post_delete_view(request, id):
     post = get_object_or_404(Post, id=id)
     # post = get_object_or_404(Post, id=id, writer=request.user)
     if request.user != post.writer:
         raise Http404('잘못된 접근입니다.')
-    
+
     if request.method == 'GET':
-        context = { 'post': post }
+        context = {'post': post}
         return render(request, 'posts/post_confirm_delete.html', context)
     else:
         post.delete()
         return redirect('index')
-    
-
-
-
-
-
-
-
-
-
-
 
 
 def url_view(request):
     print('url_view()')
-    data = {'code': '001', 'msg':'OK'}
+    data = {'code': '001', 'msg': 'OK'}
     return HttpResponse('<h1>url_view</h1>')
     # return JsonResponse(data)
+
 
 def url_parameter_view(request, username):
     print('url_parameter_view()')
@@ -131,9 +127,10 @@ def url_parameter_view(request, username):
     print(f'request.GET: {request.GET}')
     return HttpResponse(username)
 
+
 def function_view(request):
     print(f'request.method: {request.method}')
-    
+
     if request.method == 'GET':
         print(f'request.GET: {request.GET}')
     elif request.method == 'POST':
@@ -145,6 +142,7 @@ class ClassView(ListView):
     model = Post
     ordering = ['-id']
     # template_name = 'cbv_view.html'
+
 
 def function_list_view(request):
     object_list = Post.objects.all().order_by('-id')

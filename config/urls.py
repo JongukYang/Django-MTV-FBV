@@ -12,11 +12,11 @@ urlpatterns = [
     path('fbv/list/', function_list_view),
     path('fbv/', function_view),
     path('cbv/', ClassView.as_view(), name='cbv'),
-    
+
     path('', index, name='index'),
     path('accounts/', include('accounts.urls', namespace='accounts')),
     path('posts/', include('posts.urls', namespace='posts')),
-    
+
     # 배포시 삭제
     path('admin/', admin.site.urls),
     path('__debug__/', include('debug_toolbar.urls')),

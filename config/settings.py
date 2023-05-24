@@ -60,7 +60,7 @@ MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
-    ###
+    # 디버그 툴바
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     ###
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -68,7 +68,10 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+# Root URL을 처리하는 곳
 ROOT_URLCONF = "config.urls"
+# User Model을 어떤걸로 할 것인지 설정하는 것 (Django User Model VS Custom User Model)
+AUTH_USER_MODEL = 'users.User'
 
 TEMPLATES = [
     {
@@ -104,12 +107,14 @@ DATABASES = {
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
-    },
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
+    # 다른 개인정보와 유사한 패스워드 제한
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator", },
+    # 패스워드 최소 8자 미만 길이 제한
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator", },
+    # 일반적인 흔한 패스워드 제한
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator", },
+    # 숫자로만 이루어진 패스워드 제한
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator", },
 ]
 
 
@@ -141,5 +146,3 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-AUTH_USER_MODEL = 'users.User'
